@@ -2,7 +2,7 @@
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(PlayerCollisions))]
+[RequireComponent(typeof(Rigidbody2D), typeof(PlayerCollisions), typeof(Health))]
 public class Movement : MonoBehaviour {
 
     private InputActions1 inputs1;
@@ -20,8 +20,8 @@ public class Movement : MonoBehaviour {
     [SerializeField] int jumps = 3;
     [SerializeField] float jumpForce = 7f;
     [SerializeField] float dropVelocity = 20f;
-    [SerializeField] float boopMultiplier = 1.3f;
-    [SerializeField] float boopedTime = 0.4f;
+    [SerializeField] public float boopMultiplier = 1.1f;
+    [SerializeField] public float boopedTime = 0.3f;
     [SerializeField] float dodgeDowntime = 1.2f;
     [SerializeField] float dodgeTime = 0.2f;
     [SerializeField] float dodgeRange = 4.5f;
@@ -82,6 +82,7 @@ public class Movement : MonoBehaviour {
         update = false;
         booped = true;
         rb.velocity = direction * (dodgeRange / dodgeTime) * boopMultiplier;
+        GetComponent<Health>().TakeHit();
 
         StartCoroutine(StopBooped());
     }
