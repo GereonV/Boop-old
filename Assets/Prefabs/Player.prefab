@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3073852418830902357}
   - component: {fileID: 3073852418830902345}
   - component: {fileID: 3073852418830902344}
+  - component: {fileID: 2989766052797427069}
   - component: {fileID: 3073852418830902359}
   - component: {fileID: 3073852418830902346}
   - component: {fileID: 8269417674135025590}
@@ -133,6 +134,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &2989766052797427069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3073852418830902356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afde59226ec232428d28125dc34dbc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  update: 0
+  jumpsLeft: 0
+  dodge: 0
+  boopMultiplier: 0
+  boopedTime: 0
+  dodging: 0
+  booped: 0
 --- !u!114 &3073852418830902359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,15 +165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89fb7fc98a42c94cb37bf187403e7e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dodging: 0
-  booped: 0
   player1: 1
   moveSpeed: 6
-  jumps: 3
   jumpForce: 7
   dropVelocity: 20
-  boopMultiplier: 1.1
-  boopedTime: 0.3
   dodgeDowntime: 1.2
   dodgeTime: 0.2
   dodgeRange: 4.5

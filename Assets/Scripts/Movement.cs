@@ -2,26 +2,22 @@
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(PlayerCollisions), typeof(Health))]
+[RequireComponent(typeof(PlayerInfo), typeof(PlayerCollisions), typeof(Health))]
 public class Movement : MonoBehaviour {
 
+    private PlayerInfo info;
     private InputActions1 inputs1;
     private InputActions2 inputs2;
     private Rigidbody2D rb;
-    private bool update = true;
     private float movement;
-    private int jumpsLeft;
-    private bool dodge = true;
-    [HideInInspector] public bool dodging = false;
-    [HideInInspector] public bool booped = false;
 
-    [SerializeField] bool player1 = true;
+    [SerializeField] public bool player1 = true;
     [SerializeField] float moveSpeed = 6f;
-    [SerializeField] int jumps = 3;
+    [SerializeField] public static int jumps = 3;
     [SerializeField] float jumpForce = 7f;
     [SerializeField] float dropVelocity = 20f;
-    [SerializeField] public float boopMultiplier = 1.1f;
-    [SerializeField] public float boopedTime = 0.3f;
+    [SerializeField] public static float boopMultiplier = 1.1f;
+    [SerializeField] public static float boopedTime = 0.3f;
     [SerializeField] float dodgeDowntime = 1.2f;
     [SerializeField] float dodgeTime = 0.2f;
     [SerializeField] float dodgeRange = 4.5f;
@@ -29,6 +25,7 @@ public class Movement : MonoBehaviour {
     [SerializeField] float fallMultiplier = 2.5f;
 
     void Awake() {
+        info = GetComponent<PlayerInfo>();
         rb = GetComponent<Rigidbody2D>();
         inputs1 = new InputActions1();
         inputs2 = new InputActions2();
@@ -51,7 +48,7 @@ public class Movement : MonoBehaviour {
         if(velocity.y < 0)
             velocity.y += Physics2D.gravity.y * Time.fixedDeltaTime * (fallMultiplier - 1);
 
-        if(update) {
+        if(info.update) {
             velocity.x = movement * moveSpeed;
         }
 
@@ -59,16 +56,16 @@ public class Movement : MonoBehaviour {
     }
 
     private void Jump(CallbackContext obj) {
-        if(jumpsLeft > 0 && !GetComponent<PlayerCollisions>().CollisionTop() && !booped) {
+        if(info.jumpsLeft > 0 && !GetComponent<PlayerCollisions>().CollisionTop() && !info.booped) {
             Vector2 velocity = rb.velocity;
             velocity.y = jumpForce;
             rb.velocity = velocity;
-            jumpsLeft--;
+            info.jumpsLeft--;
         }
     }
 
     private void Drop(CallbackContext obj) {
-        if(!booped)
+        if(!info.booped)
             rb.velocity += Vector2.down * dropVelocity;
     }
 
@@ -79,23 +76,23 @@ public class Movement : MonoBehaviour {
     }
 
     public void StartBooped(Vector2 direction) {
-        update = false;
-        booped = true;
-        rb.velocity = direction * (dodgeRange / dodgeTime) * boopMultiplier;
+        info.update = false;
+        info.booped = true;
+        rb.velocity = direction * (dodgeRange / dodgeTime) * GetComponent<PlayerInfo>().boopMultiplier;
         GetComponent<Health>().TakeHit();
 
         StartCoroutine(StopBooped());
     }
 
     public IEnumerator StopBooped() {
-        yield return new WaitForSeconds(boopedTime);
-        update = true;
-        booped = false;
+        yield return new WaitForSeconds(GetComponent<PlayerInfo>().boopedTime);
+        info.update = true;
+        info.booped = false;
     }
 
     public void Dodge(CallbackContext obj) {
-        if(dodge && movement != 0f && !booped) {
-            dodge = false;
+        if(info.dodge && movement != 0f && !info.booped) {
+            info.dodge = false;
             if(dodgeResetsJump)
                 ResetJumps();
 
@@ -104,24 +101,24 @@ public class Movement : MonoBehaviour {
     }
 
     public IEnumerator StartDodge() {
-        update = false;
+        info.update = false;
         rb.gravityScale = 0;
-        dodging = true;
+        info.dodging = true;
         rb.velocity = Vector2.right * (dodgeRange / dodgeTime) * movement;
         yield return new WaitForSeconds(dodgeTime);
 
         StartCoroutine(StopDodge());
     }
     public IEnumerator StopDodge() {
-        update = true;
+        info.update = true;
         rb.gravityScale = 1f;
-        dodging = false;
+        info.dodging = false;
         yield return new WaitForSeconds(dodgeDowntime);
-        dodge = true;
+        info.dodge = true;
     }
 
     public void ResetJumps() {
-        jumpsLeft = jumps;
+        info.jumpsLeft = jumps;
     }
 
 

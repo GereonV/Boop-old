@@ -14,8 +14,8 @@ public class Health : MonoBehaviour{
     }
 
     public void TakeHit() {
-        movement.boopMultiplier += addedMultiplier;
-        movement.boopedTime += addedTime;
+        GetComponent<PlayerInfo>().boopMultiplier += addedMultiplier;
+        GetComponent<PlayerInfo>().boopedTime += addedTime;
     }
 
     private void FixedUpdate() {
@@ -24,6 +24,11 @@ public class Health : MonoBehaviour{
     }
 
     void Die() {
-        LevelManager.Restart();
+        LevelManager levelManager = LevelManager.instance;
+        if(movement.player1)
+            levelManager.score2++;
+        else
+            levelManager.score1++;
+        levelManager.Restart();
     }
 }

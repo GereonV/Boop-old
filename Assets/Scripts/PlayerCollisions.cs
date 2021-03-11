@@ -13,7 +13,7 @@ public class PlayerCollisions : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if(movement.dodging && collision.collider.tag.Equals("Player")) {
+        if(GetComponent<PlayerInfo>().dodging && collision.collider.tag.Equals("Player")) {
             movement.Boop(collision.collider.gameObject);
         } else {
             if(Physics2D.BoxCast(collider.bounds.center + Vector3.down * (collider.bounds.extents.y + 2 * extra), new Vector2(collider.bounds.size.x, extra), 0f, Vector2.zero, 0f))
