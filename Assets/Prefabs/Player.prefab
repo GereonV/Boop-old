@@ -183,6 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3141b21a83222d243ac4e5dc4703dc2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPos: -10
+  minPos: -15
   addedMultiplier: 0.2
   addedTime: 0.15

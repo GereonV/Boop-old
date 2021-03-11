@@ -24,6 +24,6 @@ public class Health : MonoBehaviour{
     }
 
     void Die() {
-
+        LevelManager.Restart();
     }
 }
